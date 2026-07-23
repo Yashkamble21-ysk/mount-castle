@@ -61,7 +61,7 @@ export default function Testimonials() {
           flex-shrink: 0;
           background: #ffffff;
           border-radius: 24px;
-          padding: 14px;
+          padding: 20px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
           border: 1.5px solid rgba(0, 0, 0, 0.06);
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
