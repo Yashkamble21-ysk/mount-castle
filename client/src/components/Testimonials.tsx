@@ -17,18 +17,20 @@ export default function Testimonials() {
           overflow: hidden;
           position: relative;
           padding: 32px 0;
+
           mask-image: linear-gradient(
             to right,
             transparent,
-            black 4%,
-            black 96%,
+            black 5%,
+            black 95%,
             transparent
           );
+
           -webkit-mask-image: linear-gradient(
             to right,
             transparent,
-            black 4%,
-            black 96%,
+            black 5%,
+            black 95%,
             transparent
           );
         }
@@ -37,7 +39,7 @@ export default function Testimonials() {
           display: flex;
           gap: 28px;
           width: max-content;
-          animation: testimonialScroll 50s linear infinite;
+          animation: testimonialScroll 45s linear infinite;
         }
 
         .testimonial-slider:hover .testimonial-track {
@@ -53,122 +55,113 @@ export default function Testimonials() {
           }
         }
 
-        /* ===== Card: 3 visible on desktop ===== */
+        /* Desktop */
         .testimonial-card {
-          /* calc: (viewport - container padding - 2 gaps) / 3 */
-          width: clamp(280px, calc((100vw - 120px) / 3), 400px);
-          aspect-ratio: 3 / 4;
+          width: 380px;
+          height: 520px;
           flex-shrink: 0;
-          background: #ffffff;
+
+          background: #fff;
           border-radius: 24px;
-          padding: 20px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
-          border: 1.5px solid rgba(0, 0, 0, 0.06);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          padding: 18px;
+
           display: flex;
           align-items: center;
           justify-content: center;
+
+          border: 1px solid rgba(0,0,0,.08);
+
+          box-shadow: 0 10px 30px rgba(0,0,0,.08);
+
+          transition: .35s ease;
           cursor: pointer;
         }
 
         .testimonial-card:hover {
-          transform: translateY(-10px) scale(1.02);
-          box-shadow: 0 24px 64px rgba(234, 179, 8, 0.22);
-          border-color: rgba(234, 179, 8, 0.5);
+          transform: translateY(-8px);
+          box-shadow: 0 20px 45px rgba(234,179,8,.25);
         }
 
         .testimonial-image-wrapper {
           width: 100%;
           height: 100%;
-          border-radius: 16px;
-          background: #f5f5f5;
           overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
+          border-radius: 18px;
+          background: #f5f5f5;
         }
 
         .testimonial-image {
           width: 100%;
           height: 100%;
+          display: block;
           object-fit: cover;
           object-position: top center;
-          display: block;
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform .4s ease;
         }
 
         .testimonial-card:hover .testimonial-image {
           transform: scale(1.03);
         }
 
-        /* ===== 2XL screens (1536px+) — 3 large cards ===== */
+        /* Large Desktop */
         @media (min-width: 1536px) {
           .testimonial-card {
-            width: clamp(420px, calc((100vw - 140px) / 3), 540px);
-            padding: 18px;
-            border-radius: 28px;
+            width: 420px;
+            height: 570px;
           }
-          .testimonial-image-wrapper {
-            border-radius: 20px;
-          }
+
           .testimonial-track {
             gap: 36px;
           }
         }
 
-        /* ===== Tablet (769px – 1024px) — 2 cards visible ===== */
-        @media (max-width: 1024px) {
-          .testimonial-card {
-            width: clamp(300px, calc((100vw - 90px) / 2), 420px);
-            padding: 14px;
-            border-radius: 22px;
+        /* Tablet */
+        @media (max-width:1024px) {
+
+          .testimonial-card{
+            width:340px;
+            height:470px;
           }
-          .testimonial-image-wrapper {
-            border-radius: 16px;
-          }
-          .testimonial-track {
-            gap: 24px;
-            animation-duration: 40s;
+
+          .testimonial-track{
+            gap:22px;
+            animation-duration:40s;
           }
         }
 
-        /* ===== Mobile (≤768px) — 1 card + peek ===== */
-        @media (max-width: 768px) {
-          .testimonial-card {
-            width: clamp(270px, calc(100vw - 80px), 380px);
-            padding: 12px;
-            border-radius: 20px;
+        /* Mobile */
+        @media (max-width:768px){
+
+          .testimonial-card{
+            width:280px;
+            height:390px;
+            padding:12px;
           }
-          .testimonial-image-wrapper {
-            border-radius: 14px;
-          }
-          .testimonial-track {
-            gap: 20px;
-            animation-duration: 35s;
+
+          .testimonial-track{
+            gap:18px;
+            animation-duration:35s;
           }
         }
 
-        /* ===== Small mobile (≤480px) — 1 card ===== */
-        @media (max-width: 480px) {
-          .testimonial-card {
-            width: clamp(240px, calc(100vw - 60px), 340px);
-            padding: 10px;
-            border-radius: 18px;
+        /* Small Mobile */
+        @media (max-width:480px){
+
+          .testimonial-card{
+            width:240px;
+            height:340px;
+            padding:10px;
           }
-          .testimonial-image-wrapper {
-            border-radius: 12px;
-          }
-          .testimonial-track {
-            gap: 16px;
-            animation-duration: 30s;
+
+          .testimonial-track{
+            gap:16px;
           }
         }
       `}</style>
 
       <section className="py-12 md:py-20 bg-gradient-to-b from-background to-gray-50 overflow-hidden">
         <div className="container mx-auto px-4">
-          {/* Heading */}
+
           <div className="text-center mb-14">
             <div className="h-1 w-20 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto mb-6 rounded-full" />
 
@@ -184,15 +177,14 @@ export default function Testimonials() {
             </p>
           </div>
 
-          {/* Slider */}
           <div className="testimonial-slider">
             <div className="testimonial-track">
               {[...testimonials, ...testimonials].map((item, index) => (
-                <div key={index} className="testimonial-card">
+                <div className="testimonial-card" key={index}>
                   <div className="testimonial-image-wrapper">
                     <img
                       src={item.image}
-                      alt="Customer testimonial"
+                      alt="Customer Testimonial"
                       className="testimonial-image"
                       loading="lazy"
                     />
@@ -201,6 +193,7 @@ export default function Testimonials() {
               ))}
             </div>
           </div>
+
         </div>
       </section>
     </>
