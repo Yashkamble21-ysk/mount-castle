@@ -58,7 +58,7 @@ export default function Testimonials() {
         /* Desktop */
         .testimonial-card {
           width: 380px;
-          height: 520px;
+          height: 510px;
           flex-shrink: 0;
 
           background: #fff;
