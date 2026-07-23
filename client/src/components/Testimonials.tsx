@@ -162,7 +162,7 @@ export default function Testimonials() {
       <section className="py-12 md:py-20 bg-gradient-to-b from-background to-gray-50 overflow-hidden">
         <div className="container mx-auto px-4">
 
-          <div className="text-center mb-14">
+          <div className="text-center mb-8">
             <div className="h-1 w-20 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto mb-6 rounded-full" />
 
             <h2
