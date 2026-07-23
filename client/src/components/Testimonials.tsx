@@ -56,7 +56,7 @@ export default function Testimonials() {
         /* ===== Card: 3 visible on desktop ===== */
         .testimonial-card {
           /* calc: (viewport - container padding - 2 gaps) / 3 */
-          width: clamp(280px, calc((100vw - 120px) / 3), 480px);
+          width: clamp(280px, calc((100vw - 120px) / 3), 400px);
           aspect-ratio: 3 / 4;
           flex-shrink: 0;
           background: #ffffff;
