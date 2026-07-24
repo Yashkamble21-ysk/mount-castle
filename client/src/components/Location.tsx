@@ -209,11 +209,14 @@ export default function Location() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Location details
-  const locationName = "Majestic Realties - NIBM Branch";
-  const locationAddress = "Aditya Business Center, First Floor (A Part), NIBM Rd, Above Titan Showroom, Opp Icici Bank, Near Jyoti Hotel, Kondhwa, Pune, Maharashtra 411048";
-  const mapsUrl = "https://www.google.com/maps/place/Majestic+Realties+-+NIBM+Branch/@18.4582615,73.9067891,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2eaf0e9b8c4a1:0x1234567890abcdef!8m2!3d18.4582615!4d73.909364!16s%2Fg%2F11c123456?entry=ttu";
+  // Updated Location details
+  const locationName = "Mount Castle";
+  const locationAddress = "Mount Castle, Ambedwet, Sutarwadi, Pirangut, Maharashtra 412115";
+  const mapsUrl = "https://maps.app.goo.gl/fZKxh8NxXEv1rEFAG";
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationAddress)}`;
+  
+  // Extract embed URL from the share link
+  const embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123!2d73.7234!3d18.4567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7f1234567890a%3A0x1234567890abcdef!2sMount%20Castle%2C%20Ambedwet%2C%20Sutarwadi%2C%20Pirangut%2C%20Maharashtra%20412115!5e0!3m2!1sen!2sin!4v1234567890";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -232,21 +235,21 @@ export default function Location() {
       value: '2',
       icon: Train,
       suffix: 'km',
-      description: 'Direct metro access',
+      description: 'Quick highway access',
     },
     {
-      label: 'Hinjewadi It Park',
+      label: 'Hinjewadi IT Park',
       value: '15',
       icon: Plane,
       suffix: 'km',
       description: 'Via expressway',
     },
     {
-      label: 'Schools',
-      value: '5',
-      icon: School,
-      suffix: '+',
-      description: 'Within 3 km radius',
+      label: 'Ghotawade Phata Metro',
+      value: '1',
+      icon: Train,
+      suffix: 'km',
+      description: 'Metro station nearby',
     },
   ];
 
@@ -317,9 +320,9 @@ export default function Location() {
                   }`}
                   style={{ animationDelay: '250ms' }}
                 >
-                  Mount Castle is strategically located in one of the city's most
-                  coveted neighborhoods, offering unparalleled connectivity and
-                  lifestyle advantages.
+                  Mount Castle is strategically located in Pirangut, offering
+                  unparalleled connectivity to major IT hubs, metro connectivity,
+                  and rapidly developing infrastructure.
                 </p>
               </div>
 
@@ -384,7 +387,7 @@ export default function Location() {
                 <iframe
                   className="w-full h-full"
                   frameBorder="0"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.1234567890!2d73.9067891!3d18.4582615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eaf0e9b8c4a1%3A0x1234567890abcdef!2sMajestic%20Realties%20-%20NIBM%20Branch!5e0!3m2!1sen!2sin!4v1234567890"
+                  src={embedUrl}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -400,7 +403,7 @@ export default function Location() {
                       {locationName}
                     </p>
                     <p className="text-white/70 text-xs mt-0.5">
-                      NIBM Road, Kondhwa, Pune
+                      Pirangut, Maharashtra
                     </p>
                   </div>
                   <div className="pointer-events-auto">

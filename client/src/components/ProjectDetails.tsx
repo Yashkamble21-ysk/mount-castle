@@ -533,9 +533,9 @@ export default function ProjectDetails() {
     {
       label: 'Pune Ring Road',
       value: '2',
-      icon: Train,
+      icon: Car,
       suffix: 'km',
-      description: 'Direct metro access',
+      description: 'Quick highway access',
       gradient: 'from-green-500 to-emerald-500',
     },
     {
@@ -547,11 +547,11 @@ export default function ProjectDetails() {
       gradient: 'from-blue-500 to-indigo-500',
     },
     {
-      label: 'Schools',
-      value: '5',
-      icon: School,
-      suffix: '+',
-      description: 'Within 3 km radius',
+      label: 'Ghotawade Phata Metro',
+      value: '1',
+      icon: Train,
+      suffix: 'km',
+      description: 'Metro station nearby',
       gradient: 'from-amber-500 to-yellow-500',
     },
   ];
@@ -560,7 +560,7 @@ export default function ProjectDetails() {
     'RERA approved project with clear legal titles',
     'Well-connected to Pune Ring Road for seamless travel',
     'Close proximity to Hinjewadi IT Park — ideal for professionals',
-    'Surrounded by top educational institutions',
+    'Just 1 km from Ghotawade Phata Metro Station',
     'Upcoming metro connectivity boosts future value',
     'Rapidly developing neighborhood with growing infrastructure',
   ];
@@ -660,12 +660,9 @@ export default function ProjectDetails() {
             style={{ animationDelay: '400ms' }}
           >
             <Tabs defaultValue="highlights" className="w-full" onValueChange={setActiveTab}>
-              <TabsList className="proj-tabs-list grid w-full grid-cols-2 md:grid-cols-4 mb-12">
+              <TabsList className="proj-tabs-list grid w-full grid-cols-3 mb-12">
                 <TabsTrigger value="highlights" className="proj-tab-trigger">
                   Highlights
-                </TabsTrigger>
-                <TabsTrigger value="configurations" className="proj-tab-trigger">
-                  Configurations
                 </TabsTrigger>
                 <TabsTrigger value="masterplan" className="proj-tab-trigger">
                   Master Plan
@@ -709,54 +706,6 @@ export default function ProjectDetails() {
                       </div>
                     ))}
                   </div>
-                </div>
-              </TabsContent>
-
-              {/* ===== Configurations Tab ===== */}
-              <TabsContent value="configurations" className="proj-tab-content space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {configurations.map((config, index) => (
-                    <div
-                      key={index}
-                      className="config-card p-7 rounded-2xl cursor-pointer"
-                    >
-                      {/* Tag */}
-                      <div className="flex items-center justify-between mb-4 relative z-[2]">
-                        <span className="config-badge px-3 py-1 text-xs font-bold rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                          {config.tag}
-                        </span>
-                        <div className="config-arrow flex items-center gap-1 text-yellow-400 text-xs font-semibold">
-                          View
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </div>
-                      </div>
-
-                      {/* Type */}
-                      <h3
-                        className="config-type text-3xl font-bold text-yellow-400 mb-5 relative z-[2]"
-                        style={{ fontFamily: 'var(--font-display)' }}
-                      >
-                        {config.type}
-                      </h3>
-
-                      {/* Details */}
-                      <div className="space-y-3 relative z-[2]">
-                        <div>
-                          <p className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-medium">
-                            Area
-                          </p>
-                          <p className="text-white font-semibold">{config.area}</p>
-                        </div>
-                        <div className="h-px bg-white/5" />
-                        <div>
-                          <p className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-medium">
-                            Starting Price
-                          </p>
-                          <p className="text-lg font-bold text-white">{config.price}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </TabsContent>
 
