@@ -163,6 +163,7 @@ const locationStyles = `
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 24px;
     background: linear-gradient(135deg, hsl(var(--accent) / 0.1), hsl(var(--primary) / 0.05));
+    cursor: pointer;
   }
   .map-container::before {
     content: '';
@@ -176,6 +177,7 @@ const locationStyles = `
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.5s ease;
+    pointer-events: none;
   }
   .map-container:hover::before {
     opacity: 1;
@@ -186,6 +188,7 @@ const locationStyles = `
   }
   .map-container:hover .map-overlay {
     opacity: 1;
+    visibility: visible;
   }
   .map-container:hover .map-pin {
     animation: float 2s ease-in-out infinite;
@@ -196,9 +199,16 @@ const locationStyles = `
   
   .map-overlay {
     opacity: 0;
-    transition: opacity 0.5s ease;
+    visibility: hidden;
+    transition: all 0.5s ease;
     backdrop-filter: blur(8px);
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    -webkit-backdrop-filter: blur(8px);
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .map-overlay > * {
+    pointer-events: auto;
   }
 
   .location-pin {
@@ -227,41 +237,6 @@ const locationStyles = `
     animation: shimmer 0.8s ease-out;
   }
 
-  .direction-btn {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.85) 100%);
-    background-size: 200% 200%;
-  }
-  .direction-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px -10px hsl(var(--accent) / 0.6);
-    background-position: 100% 0;
-  }
-  .direction-btn:active {
-    transform: translateY(-1px) scale(0.98);
-  }
-  .direction-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    transition: left 0.6s ease;
-  }
-  .direction-btn:hover::before {
-    left: 120%;
-  }
-  .direction-btn svg {
-    transition: transform 0.3s ease;
-  }
-  .direction-btn:hover svg {
-    transform: rotate(45deg) scale(1.1);
-  }
-
   .location-header-icon {
     background: linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--accent) / 0.05));
     border: 2px solid hsl(var(--accent) / 0.2);
@@ -275,13 +250,15 @@ const locationStyles = `
 
   .map-badge {
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: all 0.3s ease;
     border: 1px solid rgba(255,255,255,0.1);
   }
   .map-badge:hover {
-    background: rgba(255,255,255,0.3);
-    border-color: rgba(255,255,255,0.2);
-    transform: scale(1.05);
+    background: rgba(255,255,255,0.35);
+    border-color: rgba(255,255,255,0.25);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
 
   @media (max-width: 1024px) {
@@ -327,9 +304,16 @@ export default function Location() {
   // Updated Location details
   const locationName = "Mount Castle";
   const locationAddress = "Mount Castle, Ambedwet, Sutarwadi, Pirangut, Maharashtra 412115";
-  const mapsUrl = "https://maps.app.goo.gl/fZKxh8NxXEv1rEFAG";
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationAddress)}`;
   
+  // Correct Google Maps URL formats
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationAddress)}`;
+  
+  // Alternative: If you have coordinates, use this format instead:
+  // const mapsUrl = "https://www.google.com/maps?q=18.4567,73.7234";
+  
+  // Or if you have a Place ID:
+  // const mapsUrl = "https://www.google.com/maps/place/?q=place_id:YOUR_PLACE_ID";
+
   // Extract embed URL from the share link
   const embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123!2d73.7234!3d18.4567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7f1234567890a%3A0x1234567890abcdef!2sMount%20Castle%2C%20Ambedwet%2C%20Sutarwadi%2C%20Pirangut%2C%20Maharashtra%20412115!5e0!3m2!1sen!2sin!4v1234567890";
 
@@ -374,6 +358,10 @@ export default function Location() {
       description: 'Essential amenities',
     },
   ];
+
+  const handleMapClick = () => {
+    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <>
@@ -494,7 +482,10 @@ export default function Location() {
               }`}
               style={{ animationDelay: '500ms' }}
             >
-              <div className="map-container overflow-hidden w-full lg:w-full h-[360px] lg:h-[480px] relative">
+              <div 
+                className="map-container overflow-hidden w-full lg:w-full h-[360px] lg:h-[480px] relative"
+                onClick={handleMapClick}
+              >
                 {/* Map Loading State */}
                 {!mapLoaded && (
                   <div className="absolute inset-0 bg-gradient-to-br from-muted/40 to-muted/20 flex items-center justify-center z-10 rounded-[22px]">
@@ -515,25 +506,27 @@ export default function Location() {
                   referrerPolicy="no-referrer-when-downgrade"
                   onLoad={() => setMapLoaded(true)}
                   title={locationName}
+                  style={{ pointerEvents: 'none' }}
                 />
 
                 {/* Map Hover Overlay */}
-                <div className="map-overlay absolute inset-0 flex items-end justify-between p-6 pointer-events-none rounded-[22px]">
-                  <div>
+                <div className="map-overlay absolute inset-0 flex items-end justify-between p-6 rounded-[22px]">
+                  <div className="pointer-events-none">
                     <p className="text-white font-bold text-base flex items-center gap-2 drop-shadow-lg">
-                      <MapPin className="w-5 h-5 text-accent drop-shadow-glow" />
+                      <MapPin className="w-5 h-5 text-accent" />
                       {locationName}
                     </p>
                     <p className="text-white/80 text-sm mt-1 drop-shadow-md">
                       Pirangut, Maharashtra
                     </p>
                   </div>
-                  <div className="pointer-events-auto">
+                  <div>
                     <a
                       href={mapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="map-badge flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-xl text-white text-sm font-semibold hover:bg-white/30 transition-all duration-300 shadow-lg"
+                      onClick={(e) => e.stopPropagation()}
+                      className="map-badge flex items-center gap-2 px-4 py-2 bg-white/20 rounded-xl text-white text-sm font-semibold transition-all duration-300 shadow-lg"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Open in Maps
@@ -549,20 +542,6 @@ export default function Location() {
                   </div>
                 </div>
               </div>
-
-              {/* Get Directions Button */}
-              <a
-                href={directionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`direction-btn loc-shimmer mt-6 flex items-center justify-center gap-3 w-full px-8 py-4 text-accent-foreground font-bold text-base rounded-2xl shadow-xl ${
-                  isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
-                }`}
-                style={{ animationDelay: '650ms' }}
-              >
-                <Navigation className="w-5 h-5" />
-                Get Directions
-              </a>
             </div>
           </div>
         </div>
