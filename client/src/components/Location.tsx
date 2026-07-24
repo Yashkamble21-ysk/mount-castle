@@ -32,15 +32,24 @@ const locationStyles = `
   }
   @keyframes slideBar {
     from { width: 0; }
-    to { width: 3rem; }
+    to { width: 100%; }
   }
   @keyframes mapPulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.3); }
-    50% { box-shadow: 0 0 0 12px hsl(var(--accent) / 0); }
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
+    50% { box-shadow: 0 0 0 16px hsl(var(--accent) / 0); }
   }
   @keyframes dotPulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.5); }
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: hsl(var(--border)); }
+    50% { border-color: hsl(var(--accent) / 0.4); }
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   .loc-animate-fade-in-up {
@@ -63,16 +72,18 @@ const locationStyles = `
   }
 
   .loc-section-line {
-    transition: width 0.5s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .loc-section-line:hover {
     width: 6rem;
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.4);
   }
 
   .stat-card {
     position: relative;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent) / 0.02) 100%);
   }
   .stat-card::before {
     content: '';
@@ -82,44 +93,96 @@ const locationStyles = `
     width: 4px;
     height: 0;
     background: linear-gradient(to bottom, hsl(var(--accent)), hsl(var(--accent) / 0.3));
-    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 12px hsl(var(--accent) / 0.5);
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, hsl(var(--accent) / 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
   }
   .stat-card:hover::before {
     height: 100%;
   }
+  .stat-card:hover::after {
+    opacity: 1;
+  }
   .stat-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px hsl(var(--accent) / 0.1);
     border-color: hsl(var(--accent) / 0.3);
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent) / 0.05) 100%);
   }
   .stat-card:hover .stat-value {
-    transform: scale(1.1);
-  }
-  .stat-card:hover .stat-icon {
-    transform: scale(1.2) rotate(10deg);
+    transform: scale(1.15);
     color: hsl(var(--accent));
   }
-  .stat-card:hover .stat-bar {
-    animation: slideBar 0.5s ease-out forwards;
+  .stat-card:hover .stat-icon {
+    transform: scale(1.3) rotate(15deg);
+    color: hsl(var(--accent));
+    filter: drop-shadow(0 4px 8px hsl(var(--accent) / 0.3));
   }
+  .stat-card:hover .stat-bar {
+    animation: slideBar 0.6s ease-out forwards;
+    box-shadow: 0 0 8px hsl(var(--accent) / 0.4);
+  }
+  .stat-card:hover .stat-label {
+    color: hsl(var(--foreground));
+  }
+  
   .stat-value {
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent) / 0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .stat-icon {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .stat-bar {
     width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--accent) / 0.4), hsl(var(--accent)));
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+  }
+  .stat-label {
+    transition: color 0.3s ease;
   }
 
   .map-container {
     position: relative;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 24px;
+    background: linear-gradient(135deg, hsl(var(--accent) / 0.1), hsl(var(--primary) / 0.05));
+  }
+  .map-container::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .map-container:hover::before {
+    opacity: 1;
   }
   .map-container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.03) translateY(-4px);
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.25), 0 0 0 1px hsl(var(--accent) / 0.2);
   }
   .map-container:hover .map-overlay {
     opacity: 1;
@@ -127,16 +190,23 @@ const locationStyles = `
   .map-container:hover .map-pin {
     animation: float 2s ease-in-out infinite;
   }
+  .map-container iframe {
+    border-radius: 22px;
+  }
+  
   .map-overlay {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
   }
 
   .location-pin {
-    animation: mapPulse 2s ease-in-out infinite;
+    animation: mapPulse 2.5s ease-in-out infinite;
   }
   .location-pin-dot {
-    animation: dotPulse 2s ease-in-out infinite;
+    animation: dotPulse 2.5s ease-in-out infinite;
+    box-shadow: 0 0 0 4px hsl(var(--accent) / 0.2), 0 4px 12px hsl(var(--accent) / 0.5);
   }
 
   .loc-shimmer {
@@ -150,7 +220,7 @@ const locationStyles = `
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     transform: translateX(-100%) skewX(-15deg);
   }
   .loc-shimmer:hover::after {
@@ -160,14 +230,17 @@ const locationStyles = `
   .direction-btn {
     position: relative;
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.85) 100%);
+    background-size: 200% 200%;
   }
   .direction-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px -8px hsl(var(--accent) / 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px -10px hsl(var(--accent) / 0.6);
+    background-position: 100% 0;
   }
   .direction-btn:active {
-    transform: translateY(0) scale(0.97);
+    transform: translateY(-1px) scale(0.98);
   }
   .direction-btn::before {
     content: '';
@@ -176,22 +249,64 @@ const locationStyles = `
     left: -100%;
     width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.6s ease;
   }
   .direction-btn:hover::before {
     left: 120%;
+  }
+  .direction-btn svg {
+    transition: transform 0.3s ease;
+  }
+  .direction-btn:hover svg {
+    transform: rotate(45deg) scale(1.1);
+  }
+
+  .location-header-icon {
+    background: linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--accent) / 0.05));
+    border: 2px solid hsl(var(--accent) / 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .location-header-icon:hover {
+    transform: scale(1.1) rotate(10deg);
+    border-color: hsl(var(--accent) / 0.4);
+    box-shadow: 0 8px 16px hsl(var(--accent) / 0.2);
+  }
+
+  .map-badge {
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .map-badge:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
   }
 
   @media (max-width: 1024px) {
     .map-container {
       max-width: 100% !important;
-      height: 280px !important;
+      height: 320px !important;
+    }
+    .stat-card {
+      padding: 1.25rem !important;
     }
   }
+  
   @media (max-width: 640px) {
     .map-container {
-      height: 220px !important;
+      height: 280px !important;
+      border-radius: 16px;
+    }
+    .map-container iframe {
+      border-radius: 14px;
+    }
+    .stat-card {
+      padding: 1rem !important;
+    }
+    .stat-value {
+      font-size: 1.875rem !important;
     }
   }
 `;
@@ -251,6 +366,13 @@ export default function Location() {
       suffix: 'km',
       description: 'Metro station nearby',
     },
+    {
+      label: 'Schools & Hospitals',
+      value: '3',
+      icon: Hospital,
+      suffix: 'km',
+      description: 'Essential amenities',
+    },
   ];
 
   return (
@@ -265,15 +387,15 @@ export default function Location() {
         {/* Background Decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-32 right-0 w-80 h-80 rounded-full blur-3xl loc-animate-float"
-            style={{ background: 'hsl(var(--accent) / 0.06)' }}
+            className="absolute top-32 right-0 w-96 h-96 rounded-full blur-3xl loc-animate-float opacity-60"
+            style={{ background: 'hsl(var(--accent) / 0.08)' }}
           />
           <div
-            className="absolute bottom-20 left-10 w-64 h-64 rounded-full blur-3xl loc-animate-float-delayed"
-            style={{ background: 'hsl(var(--primary) / 0.04)' }}
+            className="absolute bottom-20 left-10 w-80 h-80 rounded-full blur-3xl loc-animate-float-delayed opacity-50"
+            style={{ background: 'hsl(var(--primary) / 0.06)' }}
           />
           <div
-            className="absolute inset-0 opacity-[0.015]"
+            className="absolute inset-0 opacity-[0.02]"
             style={{
               backgroundImage:
                 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)',
@@ -283,27 +405,27 @@ export default function Location() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-start">
             {/* Left: Header + Stats */}
-            <div className="space-y-8">
+            <div className="space-y-10">
               {/* Section Header */}
               <div>
                 <div
-                  className={`h-1 w-16 bg-gradient-to-r from-accent to-accent/40 mb-6 rounded-full loc-section-line cursor-pointer ${
+                  className={`h-1.5 w-16 bg-gradient-to-r from-accent via-accent to-accent/40 mb-6 rounded-full loc-section-line cursor-pointer ${
                     isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
                   }`}
                 />
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-4 mb-5">
                   <div
-                    className={`location-pin flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 ${
+                    className={`location-header-icon location-pin flex items-center justify-center w-14 h-14 rounded-2xl ${
                       isVisible ? 'loc-animate-scale-in' : 'opacity-0'
                     }`}
                     style={{ animationDelay: '100ms' }}
                   >
-                    <MapPin className="w-6 h-6 text-accent" />
+                    <MapPin className="w-7 h-7 text-accent" />
                   </div>
                   <h2
-                    className={`text-4xl md:text-5xl font-bold text-foreground ${
+                    className={`text-4xl md:text-5xl lg:text-6xl font-bold text-foreground ${
                       isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
                     }`}
                     style={{
@@ -315,7 +437,7 @@ export default function Location() {
                   </h2>
                 </div>
                 <p
-                  className={`text-lg text-muted-foreground max-w-2xl leading-relaxed ${
+                  className={`text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed ${
                     isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
                   }`}
                   style={{ animationDelay: '250ms' }}
@@ -327,38 +449,38 @@ export default function Location() {
               </div>
 
               {/* Highlight Stats Grid */}
-              <div className="grid gap-4 grid-cols-2">
+              <div className="grid gap-5 grid-cols-1 sm:grid-cols-2">
                 {highlights.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
                     <div
                       key={index}
-                      className={`stat-card p-6 bg-white rounded-xl border border-border/60 shadow-sm cursor-pointer ${
+                      className={`stat-card p-6 bg-white rounded-2xl border-2 border-border/60 shadow-md cursor-pointer ${
                         isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
                       }`}
                       style={{ animationDelay: `${index * 100 + 350}ms` }}
                     >
-                      <div className="flex items-center justify-between mb-3">
-                        <p className="text-sm font-medium text-muted-foreground">
+                      <div className="flex items-center justify-between mb-4">
+                        <p className="stat-label text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                           {item.label}
                         </p>
-                        <IconComponent className="stat-icon w-5 h-5 text-muted-foreground/40" />
+                        <IconComponent className="stat-icon w-6 h-6 text-muted-foreground/50" />
                       </div>
-                      <div className="flex items-baseline gap-1 mb-1">
+                      <div className="flex items-baseline gap-2 mb-2">
                         <p
-                          className="stat-value text-3xl font-bold text-accent"
+                          className="stat-value text-4xl md:text-5xl font-bold"
                           style={{ fontFamily: 'var(--font-display)' }}
                         >
                           {item.value}
                         </p>
-                        <span className="text-lg font-semibold text-accent/70">
+                        <span className="text-xl font-bold text-accent/70">
                           {item.suffix}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm text-muted-foreground mb-3">
                         {item.description}
                       </p>
-                      <div className="stat-bar h-0.5 bg-gradient-to-r from-accent to-accent/30 mt-3 rounded-full" />
+                      <div className="stat-bar rounded-full" />
                     </div>
                   );
                 })}
@@ -372,13 +494,13 @@ export default function Location() {
               }`}
               style={{ animationDelay: '500ms' }}
             >
-              <div className="map-container rounded-2xl overflow-hidden shadow-2xl border-2 border-border/50 w-full lg:w-[420px] h-[320px] relative">
+              <div className="map-container overflow-hidden w-full lg:w-full h-[360px] lg:h-[480px] relative">
                 {/* Map Loading State */}
                 {!mapLoaded && (
-                  <div className="absolute inset-0 bg-muted/30 flex items-center justify-center z-10">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-8 h-8 border-3 border-accent border-t-transparent rounded-full animate-spin" />
-                      <span className="text-sm text-muted-foreground">
+                  <div className="absolute inset-0 bg-gradient-to-br from-muted/40 to-muted/20 flex items-center justify-center z-10 rounded-[22px]">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+                      <span className="text-sm font-medium text-muted-foreground">
                         Loading map...
                       </span>
                     </div>
@@ -396,13 +518,13 @@ export default function Location() {
                 />
 
                 {/* Map Hover Overlay */}
-                <div className="map-overlay absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-between p-5 pointer-events-none">
+                <div className="map-overlay absolute inset-0 flex items-end justify-between p-6 pointer-events-none rounded-[22px]">
                   <div>
-                    <p className="text-white font-bold text-sm flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-accent" />
+                    <p className="text-white font-bold text-base flex items-center gap-2 drop-shadow-lg">
+                      <MapPin className="w-5 h-5 text-accent drop-shadow-glow" />
                       {locationName}
                     </p>
-                    <p className="text-white/70 text-xs mt-0.5">
+                    <p className="text-white/80 text-sm mt-1 drop-shadow-md">
                       Pirangut, Maharashtra
                     </p>
                   </div>
@@ -411,19 +533,19 @@ export default function Location() {
                       href={mapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur-md rounded-lg text-white text-xs font-medium hover:bg-white/30 transition-all duration-300"
+                      className="map-badge flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-xl text-white text-sm font-semibold hover:bg-white/30 transition-all duration-300 shadow-lg"
                     >
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-4 h-4" />
                       Open in Maps
                     </a>
                   </div>
                 </div>
 
                 {/* Animated Pin */}
-                <div className="map-pin absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <div className="map-pin absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
                   <div className="relative">
-                    <div className="w-4 h-4 bg-accent rounded-full shadow-lg location-pin-dot" />
-                    <div className="absolute inset-0 w-4 h-4 bg-accent rounded-full animate-ping opacity-30" />
+                    <div className="w-5 h-5 bg-accent rounded-full location-pin-dot" />
+                    <div className="absolute inset-0 w-5 h-5 bg-accent rounded-full animate-ping opacity-40" />
                   </div>
                 </div>
               </div>
@@ -433,12 +555,12 @@ export default function Location() {
                 href={directionsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`direction-btn loc-shimmer mt-4 flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-gradient-to-r from-accent to-accent/85 text-accent-foreground font-semibold rounded-xl shadow-lg ${
+                className={`direction-btn loc-shimmer mt-6 flex items-center justify-center gap-3 w-full px-8 py-4 text-accent-foreground font-bold text-base rounded-2xl shadow-xl ${
                   isVisible ? 'loc-animate-fade-in-up' : 'opacity-0'
                 }`}
                 style={{ animationDelay: '650ms' }}
               >
-                <Navigation className="w-4 h-4" />
+                <Navigation className="w-5 h-5" />
                 Get Directions
               </a>
             </div>
